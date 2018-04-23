@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            search-removed-tweet
 // @namespace       https://furyu.hatenablog.com/
-// @version         0.0.1.1
+// @version         0.0.1.2
 // @description     If the tweet is deleted or private, the Google search page for that tweet will open.
 // @author          furyu
 // @include         *
@@ -52,16 +52,19 @@ THE SOFTWARE.
 
 'use strict';
 
+if ( window !== window.top ) {
+    return;
+}
+
 var SCRIPT_NAME = 'search-removed-tweet',
     AUTO_REDIRECT_FROM_404_PAGE = false,
     IS_TOUCHED = ( function () {
         var touched_id = SCRIPT_NAME + '_touched',
-            jq_touched = $( '#' + touched_id );
+            $touched = $( '#' + touched_id );
         
-        if ( 0 < jq_touched.length ) {
+        if ( 0 < $touched.length ) {
             return true;
         }
-        
         $( '<b>' ).attr( 'id', touched_id ).css( 'display', 'none' ).appendTo( $( document.documentElement ) );
         
         return false;
